@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 
 class Movie {
+  final int id;
   final String imageName;
   final String title;
   final String time;
   final String description;
 
   Movie({
+    required this.id,
     required this.imageName,
     required this.title,
     required this.time,
@@ -25,6 +27,7 @@ class MovieListWidget extends StatefulWidget {
 class _MovieListWidgetState extends State<MovieListWidget> {
   final _movies = [
     Movie(
+      id: 1,
       imageName: 'images/image1.png',
       title: 'Afonya',
       time: '01 01 1977',
@@ -32,54 +35,68 @@ class _MovieListWidgetState extends State<MovieListWidget> {
           'ffffffffffffffffffffffffffffffffffffff'
     ),
     Movie(
-        imageName: 'images/image1.png',
-        title: 'Mortal combat',
-        time: '01 01 1977',
-        description: 'Movie description fffffffffffffffffffffffffffffffffffff'
-            'ffffffffffffffffffffffffffffffffffffff'
-    ),Movie(
-        imageName: 'images/image1.png',
-        title: 'Dead man',
-        time: '01 01 1977',
-        description: 'Movie description fffffffffffffffffffffffffffffffffffff'
-            'ffffffffffffffffffffffffffffffffffffff'
-    ),Movie(
+      id: 2,
+      imageName: 'images/image1.png',
+      title: 'Mortal combat',
+      time: '01 01 1977',
+      description: 'Movie description fffffffffffffffffffffffffffffffffffff'
+          'ffffffffffffffffffffffffffffffffffffff'
+    ),
+    Movie(
+      id: 3,
+      imageName: 'images/image1.png',
+      title: 'Dead man',
+      time: '01 01 1977',
+      description: 'Movie description fffffffffffffffffffffffffffffffffffff'
+          'ffffffffffffffffffffffffffffffffffffff'
+    ),
+    Movie(
+        id: 4,
         imageName: 'images/image1.png',
         title: 'Terminator',
         time: '01 01 1977',
         description: 'Movie description fffffffffffffffffffffffffffffffffffff'
             'ffffffffffffffffffffffffffffffffffffff'
-    ),Movie(
+    ),
+    Movie(
+        id: 5,
         imageName: 'images/image1.png',
         title: 'Rambo first blood',
         time: '01 01 1977',
         description: 'Movie description fffffffffffffffffffffffffffffffffffff'
             'ffffffffffffffffffffffffffffffffffffff'
-    ),Movie(
+    ),
+    Movie(
+        id: 6,
         imageName: 'images/image1.png',
         title: 'Gladiator',
         time: '01 01 1977',
         description: 'Movie description fffffffffffffffffffffffffffffffffffff'
             'ffffffffffffffffffffffffffffffffffffff'
-    ),Movie(
+    ),
+    Movie(
+        id: 7,
         imageName: 'images/image1.png',
         title: 'Elisa',
         time: '01 01 1977',
         description: 'Movie description fffffffffffffffffffffffffffffffffffff'
             'ffffffffffffffffffffffffffffffffffffff'
     ),Movie(
+        id: 8,
         imageName: 'images/image1.png',
         title: 'Law abiding citizen',
         time: '01 01 1977',
         description: 'Movie description fffffffffffffffffffffffffffffffffffff'
             'ffffffffffffffffffffffffffffffffffffff'
     ),Movie(
+        id: 9,
         imageName: 'images/image1.png',
         title: 'Departed',
         time: '01 01 1977',
         description: 'Movie description fffffffffffffffffffffffffffffffffffff'
             'ffffffffffffffffffffffffffffffffffffff'
     ),Movie(
+        id: 10,
         imageName: 'images/image1.png',
         title: 'Transformers',
         time: '01 01 1977',
@@ -110,6 +127,14 @@ class _MovieListWidgetState extends State<MovieListWidget> {
 
     _filteredMovies = _movies;
     _searchController.addListener(_searchMovies);
+  }
+
+  void _onMovieTap(int index) {
+    final id = _movies[index].id;
+    Navigator.of(context).pushNamed(
+      '/main_screen/movie_details',
+      arguments: id,
+    );
   }
 
   @override
@@ -200,9 +225,7 @@ class _MovieListWidgetState extends State<MovieListWidget> {
                     color: Colors.transparent,
                     child: InkWell(
                       borderRadius: BorderRadius.all(Radius.circular(25)),
-                      onTap: () {
-                        print('push');
-                      },
+                      onTap: () => _onMovieTap(index),
                     ),
                   ),
                 ],
