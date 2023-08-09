@@ -1,15 +1,32 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 
-class ViewWidget extends StatelessWidget {
-  const ViewWidget({super.key});
+class ViewWidget extends StatefulWidget {
+  ViewWidget({super.key});
+
+  @override
+  State<ViewWidget> createState() => _ViewWidgetState();
+}
+
+class _ViewWidgetState extends State<ViewWidget> {
+  List info = ['name', 'surname', 'age'];
+
+  String getInfoElement() {
+    int randomIndex = Random().nextInt(info.length);
+    setState(() {
+
+    });
+    return '${info[randomIndex]} index $randomIndex';
+  }
 
   @override
   Widget build(BuildContext context) {
     return Center(
       child: ElevatedButton(
-        onPressed: () {},
+        onPressed: getInfoElement,
         child: Text(
-          'Get information on user',
+          'Get information on user ${getInfoElement()}',
         ),
       ),
     );
