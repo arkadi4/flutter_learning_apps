@@ -1,7 +1,10 @@
 import 'dart:math';
 
 import 'package:facade_pattern_2/user.dart';
+import 'package:facade_pattern_2/user_manager.dart';
 import 'package:flutter/material.dart';
+
+import 'api_manager.dart';
 
 class ViewWidget extends StatefulWidget {
   ViewWidget({super.key});
@@ -11,31 +14,26 @@ class ViewWidget extends StatefulWidget {
 }
 
 class _ViewWidgetState extends State<ViewWidget> {
-  // List info = ['name', 'surname', 'age'];
 
-  Future getInfoElement() async {
-
-    // String result = '';
-    // String xxx = User().getInfoFromJSON().then((value) {
-    //   print('value $value');
-    //   return value;
-    // });
-
-    // setState(() { });
-    return User().getInfoFromJSON();
-  }
+  String? name;
+  UserManager userManager = UserManager();
 
   void getData() async {
-    Future.delayed(Duration(seconds: 3),() {
-      print('Ypa');
+
+    User? userInViewWidget = await userManager.getInfoOnUser();
+    print('userInViewWidget $userInViewWidget');
+
+    setState(() {
+      if (userInViewWidget == null) {
+        name = 'null';
+      } else {
+        name = userInViewWidget.name;
+      }
     });
-    // print('Get data  print ${await getInfoElement()}');
-    print('Get data print with then ${getInfoElement().then((value) => print('value in then $value'))}');
   }
 
   @override
   void initState() {
-    // getData();
     super.initState();
   }
 
@@ -56,7 +54,8 @@ class _ViewWidgetState extends State<ViewWidget> {
               Row(
                 children: [
                   Text('User name:'),
-                  Text('${  User().getInfoFromJSON().then((value) => value)}'),
+                  Text('$name'),
+                  // Text('${  User().display().then((value) => value)}'),
 
                 ],
               ),
@@ -69,15 +68,15 @@ class _ViewWidgetState extends State<ViewWidget> {
               Row(
                 children: [
                   Text('User age:'),
-                  Text('${User()}'),
+                  Text('${User().name}'),
                 ],
               ),
             ],
           ),
           ElevatedButton(
-            onPressed: getInfoElement,
+            onPressed: getData,
             child: Text(
-              'Get information on user ${getInfoElement()}',
+              'Get information ... ${name}', // ${getInfoElement()}
             ),
           ),
         ],

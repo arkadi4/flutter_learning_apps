@@ -1,61 +1,53 @@
 import 'package:http/http.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import 'dart:convert';
-// import 'package:intl/intl.dart';
 
 class User {
   int? id;
   String? name;
-  String? surname;
-  int? age;
+  String? lastname;
+  String? email;
+  List<User> userList = [];
 
   User({
     this.id,
     this.name,
-    this.surname,
-    this.age,
+    this.lastname,
+    this.email,
   });
 
-  // factory User.getInfoFromJSON() {
-  //   return User(
-  //     name: name
-  //   );
+  // Future<void> getInfoFromJSON() async {
+  //   Response response = await get(Uri.parse('https://jsonplaceholder.org/users'));
+  //   // print('response.body ${response.body}'); jsonString[0]
+  //   List jsonString = json.decode(response.body);
+  //   // print('jsonString[0] ${jsonString[0]}');
+  //   // print('jsonString[0][\'id\'].runtimetype ${jsonString[0]['id'].runtimeType}');
+  //   for (Map element in jsonString) {
+  //     // print(element.runtimeType);
+  //     User tempUser = User(
+  //       id: element['id'],
+  //       name : element['firstname'],
+  //       lastname : element['lastname'],
+  //       email : element['email'],
+  //     );
+  //     userList.add(tempUser);
+  //   }
+  //   // print('userList $userList');
+  //   print('userList[0].email ${userList[0].email}');
+  //   // print('User().userList ${User().userList}');
+  //   // print('first print after response await in getInfoFromJSON fn ${jsonString[0]['firstname']}');
+  //   // name = jsonString[0]['firstname'];
+  //   // return userList[0].email;
   // }
 
-  // factory Student.fromJson(Map<String, dynamic> parsedJson){
-  //   return Student(
-  //       studentId: parsedJson['id'],
-  //       studentName : parsedJson['name'],
-  //       studentScores : parsedJson ['score']
-  //   );
-  // }
-
-  Future<String> getInfoFromJSON() async {
-    // Response response = await get(Uri.parse('./json_of_user.json'));
-    Response response = await get(Uri.parse('https://jsonplaceholder.org/users'));
-    // print(response.body);
-    List jsonString = json.decode(response.body);
-    // print(jsonString[0]);
-    print(jsonString[0]['firstname']);
-    // name = jsonString[0]['firstname'];
-    return jsonString[0]['firstname'];
-  }
-
-  // String display() async {
+  // Future<String>  display() async {
   //   // String responseString = getInfoFromJSON().then((value) {
   //   //   print(value)
   //   // });
-  //   await getInfoFromJSON();
+  //   await getInfoFromJSON().then((value) => print('in display fn first print $value'));
+  //   print ('Second print in display fn ---- name = $name');
   //   return 'User $name';
   // }
 
-  // Future<String> _loadAStudentAsset() async {
-  //   return await rootBundle.loadString('./json_of_user.json');
-  // }
-  // Future<Response>
-  // Future loadStudent() async {
-  //   String jsonString = await _loadAStudentAsset();
-  //   final jsonResponse = json.decode(jsonString);
-  //   print(jsonResponse);
-  // }
+
 }
