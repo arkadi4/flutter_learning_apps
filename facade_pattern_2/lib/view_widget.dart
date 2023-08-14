@@ -1,13 +1,8 @@
-import 'dart:math';
-
-import 'package:facade_pattern_2/user.dart';
 import 'package:facade_pattern_2/user_manager.dart';
 import 'package:flutter/material.dart';
 
-import 'api_manager.dart';
-
 class ViewWidget extends StatefulWidget {
-  ViewWidget({super.key});
+  const ViewWidget({super.key});
 
   @override
   State<ViewWidget> createState() => _ViewWidgetState();
@@ -17,18 +12,18 @@ class _ViewWidgetState extends State<ViewWidget> {
 
   String? name;
   UserManager userManager = UserManager();
+  // var user;
+  Map user = {
+    'id': 'yet unknown',
+    'firstname': 'yet unknown',
+    'lastname': 'yet unknown',
+    'email': 'yet unknown',
+  };
 
   void getData() async {
-
-    User? userInViewWidget = await userManager.getInfoOnUser();
-    print('userInViewWidget $userInViewWidget');
-
+    user = await userManager.getUserInfo();
     setState(() {
-      if (userInViewWidget == null) {
-        name = 'null';
-      } else {
-        name = userInViewWidget.name;
-      }
+      user;
     });
   }
 
@@ -44,40 +39,51 @@ class _ViewWidgetState extends State<ViewWidget> {
         children: [
           Column(
             children: [
-              Text('User info'),
+              const Text('There are five users in this example.\n'
+                  ' You can get '
+                  'information on random user by pressing the button below.',
+                style: TextStyle(
+                  fontSize: 16,
+                ),
+                textAlign: TextAlign.center,
+              ),
+              ElevatedButton(
+                onPressed: getData,
+                child: Text(
+                  'Get information on random user \n '
+                      'from ${userManager.typeOfRequest}',
+                  textAlign: TextAlign.center,// ${getInfoElement()}
+                ),
+              ),
+              const SizedBox(height: 30,),
+              const Text('User info'),
               Row(
                 children: [
-                  Text('User id:'),
-                  Text('${User().id}'),
+                  const Text('User id:'),
+                  Text('${user['id']}'),
                 ],
               ),
               Row(
                 children: [
-                  Text('User name:'),
-                  Text('$name'),
+                  const Text('User name:'),
+                  Text('${user['firstname']}'),
                   // Text('${  User().display().then((value) => value)}'),
 
                 ],
               ),
               Row(
                 children: [
-                  Text('User surname:'),
-                  Text('${User().name}'),
+                  const Text('User surname:'),
+                  Text('${user['lastname']}'),
                 ],
               ),
               Row(
                 children: [
-                  Text('User age:'),
-                  Text('${User().name}'),
+                  const Text('User email:'),
+                  Text('${user['email']}'),
                 ],
               ),
             ],
-          ),
-          ElevatedButton(
-            onPressed: getData,
-            child: Text(
-              'Get information ... ${name}', // ${getInfoElement()}
-            ),
           ),
         ],
       ),
