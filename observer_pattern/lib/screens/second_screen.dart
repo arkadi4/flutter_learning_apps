@@ -1,5 +1,4 @@
-import 'package:dart_date/dart_date.dart';
-
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:observer_pattern/weather_observer/weather_observer.dart';
 
@@ -11,70 +10,57 @@ class SecondScreen extends StatefulWidget {
 }
 
 class _SecondScreenState extends State<SecondScreen> {
-  WeatherObserver instance1 = WeatherObserver();
-  WeatherObserver instance2 = WeatherObserver();
 
   @override
   void initState() {
     super.initState();
-    instance1.display();
+    WeatherObserver().addListener(doSomethingWhenNotifiedOnSecondScreen);
   }
 
+  void doSomethingWhenNotifiedOnSecondScreen() {
+    if (kDebugMode) {
+      print('second screen get notified');
+    }
+    setState(() {});
+  }
+
+  void goBackToFirstScreen() {
+    Navigator.pushReplacementNamed(context, '/first_screen');
+  }
 
   void goToThirdScreen() {
-    Navigator.of(context).pushNamed('/third_screen');
+    WeatherObserver().removeListener(doSomethingWhenNotifiedOnSecondScreen);
+    Navigator.of(context).pushReplacementNamed('/third_screen');
+  }
+
+  @override
+  void dispose() {
+    WeatherObserver().removeListener(doSomethingWhenNotifiedOnSecondScreen);
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Second screen'),
-
+        title: const Text('Second screen'),
       ),
       body: Center(
         child: Column(
-          // crossAxisAlignment: CrossAxisAlignment.center,
-
           children: [
-            Padding(
-              padding: const EdgeInsets.all(50.0),
+            const Padding(
+              padding: EdgeInsets.all(50.0),
               child: Text('second screen'),
             ),
             ElevatedButton(
-                onPressed: goToThirdScreen,
-                child: Text('push this button to go to the third screen'),
-            ),
-            Text('data'),
-
-
-
-
-
-
-
-
-
-            SizedBox(height: 100,),
-            ElevatedButton(
-              onPressed: () {
-                instance1 = WeatherObserver();
-                setState(() {
-
-                });
-              },
-              child: Text('instance1 $instance1'),
+                onPressed: goBackToFirstScreen,
+                child: const Text('push this button to go back to first screen'),
             ),
             ElevatedButton(
-              onPressed: () {
-                instance2 = WeatherObserver();
-                setState(() {
-
-                });
-              },
-              child: Text('instance1 $instance2'),
+              onPressed: goToThirdScreen,
+              child: const Text('push this button to go to the third screen'),
             ),
-            Text('comparison ${instance1 == instance2}'),
+            Text('weather count ${WeatherObserver().timeSinceEpoch}'),
           ],
         ),
       ),

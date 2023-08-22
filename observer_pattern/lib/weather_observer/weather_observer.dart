@@ -1,10 +1,9 @@
 
-
 import 'dart:async';
-
 import 'package:dart_date/dart_date.dart';
+import 'package:flutter/material.dart';
 
-class WeatherObserver {
+class WeatherObserver with ChangeNotifier{
   WeatherObserver._privateConstructor();
 
   static final WeatherObserver instance = WeatherObserver._privateConstructor();
@@ -13,54 +12,15 @@ class WeatherObserver {
     return instance;
   }
 
-  String time = (DateTime.now()).toString();
-  int timeSinceEpoch = DateTime.now().secondsSinceEpoch;
-  String algorithmOfWeatherCount = (DateTime.now()).toString();
-  Timer timerWeatherObserver = Timer(Duration(seconds: 5), () {
-    print('initial timer');
-  });
+  bool isTimerRunning = false;
+  int timeSinceEpoch = DateTime.now().secondsSinceEpoch % 35;
+  Timer? timerWeatherObserver;
 
-  String xxx = "xxx";
-
-
-  void updateTime() {
-    time = (DateTime.now()).toString();
-    timeSinceEpoch = DateTime.now().secondsSinceEpoch;
-    xxx = 'gggggg';
-  }
-
-  void createTimerWith5SecondsUpdate() {
-    // Timer.periodic(Duration(seconds: 3), (time) => print('YPA $time'));
-    var counter = 10;
-    timerWeatherObserver = Timer.periodic(Duration(seconds: 3), (timer) {
-      time = (DateTime.now()).toString();
-      timeSinceEpoch = DateTime.now().secondsSinceEpoch;
-      print(timer.tick);
-      print('time $time estimate $timeSinceEpoch');
-      if (timer.tick == 5) {
-        timer.cancel();
-      }
-      // print(timer.tick);
-      // counter--;
-      // if (counter == 0) {
-      //   print('Cancel timer');
-      //   timer.cancel();
-      // }
+  void createTimerAndNotify() {
+    timerWeatherObserver = Timer.periodic(const Duration(seconds: 3), (timer) {
+      timeSinceEpoch = DateTime.now().secondsSinceEpoch % 35;
+      notifyListeners();
     });
-    // Timer(() => print('YPA'), );
+    isTimerRunning = true;
   }
-
-  void cancelTimer() {
-    timerWeatherObserver.cancel();
-  }
-
-  void displayTime() {
-    print('time $time');
-  }
-
-  void display() {
-    print('algorithmOfWeatherCount $algorithmOfWeatherCount');
-  }
-
-
 }
