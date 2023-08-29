@@ -11,5 +11,5 @@ class ListOfImages {
     return instance;
   }
 
-  List<String> list = [Repositoty().pictureUrl];
+  List<String> list = [Repository().pictureUrl];
 }

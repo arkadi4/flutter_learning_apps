@@ -13,7 +13,7 @@ class ViewWidget extends StatefulWidget {
 
 class _ViewWidgetState extends State<ViewWidget> {
 
-  final Repositoty obj = Repositoty();
+  final Repository obj = Repository();
 
 
   @override

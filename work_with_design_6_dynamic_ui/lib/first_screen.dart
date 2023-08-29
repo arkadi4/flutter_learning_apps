@@ -1,6 +1,9 @@
 
 
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:work_with_design_6_dynamic_ui/new_view_widget.dart';
+import 'package:work_with_design_6_dynamic_ui/view_model.dart';
 import 'package:work_with_design_6_dynamic_ui/view_widget.dart';
 
 class FirstScreen extends StatefulWidget {
@@ -11,20 +14,11 @@ class FirstScreen extends StatefulWidget {
 }
 
 class _FirstScreenState extends State<FirstScreen> {
-  bool _isVisible = true;
 
-  void hideButtonHandler() {
-    _isVisible = false;
-    setState(() {});
-  }
-
-  void showButtonHandler() {
-    _isVisible = true;
-    setState(() {});
-  }
 
   @override
   Widget build(BuildContext context) {
+    ViewModel viewModel = context.watch<ViewModel>();
     return Scaffold(
       appBar: AppBar(
         title: Text('First screen'),
@@ -34,11 +28,11 @@ class _FirstScreenState extends State<FirstScreen> {
           Expanded(
             child: Center(
               child: Visibility(
-                visible: _isVisible,
+                visible: viewModel.isVisible,
                 replacement: Center(
                   child: Text('hidden'),
                 ),
-                child: ViewWidget(),
+                child: NewViewWidget(),
               ),
             ),
           ),
@@ -48,14 +42,14 @@ class _FirstScreenState extends State<FirstScreen> {
               children: [
                 Expanded(
                   child: ElevatedButton(
-                    onPressed: hideButtonHandler,
+                    onPressed: viewModel.hideButtonHandler,
                     child: Text('Hide'),
                   ),
                 ),
                 SizedBox(width: 16,),
                 Expanded(
                   child: ElevatedButton(
-                    onPressed: showButtonHandler,
+                    onPressed: viewModel.showButtonHandler,
                     child: Text('Show'),
                   ),
                 ),

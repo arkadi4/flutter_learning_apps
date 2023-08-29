@@ -1,40 +1,65 @@
 
-
 import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:work_with_design_6_dynamic_ui/repository.dart';
 
 class ViewModel with ChangeNotifier {
-  final Repositoty repositoryObject = Repositoty();
+  final Repository repositoryObject = Repository();
   List<String> list = [];
   bool doWeNeedOneMorePicture = false;
   double alpha = 1.0;
+  bool isVisible = true;
+  String picture = '---';
 
   void initViewModel() async {
-    await repositoryObject.getImageFromApi();
-    list.add(repositoryObject.pictureUrl);
+    String initPicture = await repositoryObject.getInitPicture();
+    list.add(initPicture);
   }
 
-  ViewModel() {
-    initViewModel();
-  }
+  // ViewModel() {
+  //   initViewModel();
+  //   print('init list $list');
+  // }
 
   Future<String> addPictureToList() async {
-    await repositoryObject.getImageFromApi();
-    list.add(repositoryObject.pictureUrl);
-    return repositoryObject.pictureUrl;
+    picture = await repositoryObject.getImageFromApi();
+    return picture;
   }
 
-  addAlphaButtonHandler(){
-    alpha = min(1, alpha + 0.1 );
-    print('alpha $alpha');
+  //////////////////////////////////   second screen
+  int numberOfPicturesOnTheScreen = 1;
+
+  addButtonHandler() async {
+    Repository().doWeNeedNewPicture = true;
+    numberOfPicturesOnTheScreen += 1;
+    notifyListeners();
+  }
+
+  removeButtonHandler() {
+    numberOfPicturesOnTheScreen -= 1;
+    notifyListeners();
+  }
+
+  //////////////////////////////////   third screen
+  addAlphaButtonHandler() {
+    alpha = max(0, alpha - 0.1);
+
     notifyListeners();
   }
 
   removeAlphaButtonHandler() {
-    alpha = max(0, alpha - 0.1);
-    print('alpha $alpha');
+    alpha = min(1, alpha + 0.1 );
+    notifyListeners();
+  }
+
+  //////////////////////////////////   first screen
+  void hideButtonHandler() {
+    isVisible = false;
+    notifyListeners();
+  }
+
+  void showButtonHandler() {
+    isVisible = true;
     notifyListeners();
   }
 }

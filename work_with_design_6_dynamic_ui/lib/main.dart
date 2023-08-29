@@ -4,13 +4,16 @@ import 'package:work_with_design_6_dynamic_ui/first_screen.dart';
 import 'package:work_with_design_6_dynamic_ui/second_screen.dart';
 import 'package:work_with_design_6_dynamic_ui/third_screen.dart';
 import 'package:work_with_design_6_dynamic_ui/view_model.dart';
+import 'package:work_with_design_6_dynamic_ui/view_model_for_second_screen.dart';
 
 void main() {
   runApp(
 
     ChangeNotifierProvider.value(
     value: ViewModel(),
-    child: const MyApp(),
+    child: ChangeNotifierProvider.value(value: ViewModelForSecondScreen(), child: const MyApp(),),
+
+    // child: const MyApp(),
 
     )
   );
@@ -96,10 +99,12 @@ class _StartScreenState extends State<StartScreen> {
               onPressed: goToFirstScreen,
               child: Text('first screen'),
             ),
+            SizedBox(height: 30,),
             ElevatedButton(
               onPressed: goToSecondScreen,
               child: Text('second screen'),
             ),
+            SizedBox(height: 30,),
             ElevatedButton(
               onPressed: goToThirdScreen,
               child: Text('third screen'),
