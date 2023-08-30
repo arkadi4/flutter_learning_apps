@@ -22,9 +22,10 @@ class _SecondScreenState extends State<SecondScreen> {
 
   @override
   Widget build(BuildContext context) {
+    // ViewModel viewModel = context.watch<ViewModel>();
     ViewModelForSecondScreen viewModel = context.watch<ViewModelForSecondScreen>();
     // print('viewModel.list in build ${viewModel.list}');
-    print('viewModel.list in build ${viewModel.list.length}');
+    // print('viewModel.list in build ${viewModel.list.length}');
     return Scaffold(
       appBar: AppBar(title: Text('Second screen'),),
       body: Column(
@@ -33,43 +34,33 @@ class _SecondScreenState extends State<SecondScreen> {
             child: Padding(
               padding: EdgeInsets.fromLTRB( (MediaQuery.of(context).size.width-300)/2, 0, 0, 0),
               child: Center(
+                // child: ViewWidget(),
+
                 child: ListView.builder(
                   scrollDirection: Axis.horizontal,
                   // itemCount: obj.listOfPictures.length,
-                  itemCount: viewModel.numberOfPicturesOnTheScreen,
+                  itemCount: viewModel.list.length,
                   itemBuilder: (context, index) {
                     print('viewModel.list in item builder ${viewModel.list.length}');
                     print('index in item builder $index');
 
-                    // return Container(
-                    //   width: 100,
-                    //   height: 100,
-                    //   child: FutureBuilder(
-                    //     future: future,
-                    //     builder: (context, snapshot) {
-                    //       if (snapshot.hasData) {
-                    //         return Padding(
-                    //           padding: const EdgeInsets.all(8.0),
-                    //           child: Image.network(viewModel.list[index]),
-                    //         );
-                    //       } else {
-                    //         return CircularProgressIndicator();
-                    //       }
-                    //     }
-                    //   ),
-                    // );
-
                     return Container(
                       width: 100,
                       height: 100,
-                      padding: EdgeInsets.all(10),
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Image.network(viewModel.list[index]),
-                      ),
+                      child: Image.network(viewModel.list[index]),
                     );
 
-                  // return ViewForSecondScreen();
+                    // return Container(
+                    //   width: 100,
+                    //   height: 100,
+                    //   padding: EdgeInsets.all(10),
+                    //   child: Padding(
+                    //     padding: const EdgeInsets.all(8.0),
+                    //     child: Image.network(viewModel.list[index]),
+                    //   ),
+                    // );
+
+                  // return ViewForSecondScreen(index: index,);
                   },
                 ),
               ),

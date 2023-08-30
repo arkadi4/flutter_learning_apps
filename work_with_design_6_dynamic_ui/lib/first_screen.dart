@@ -32,7 +32,7 @@ class _FirstScreenState extends State<FirstScreen> {
                 replacement: Center(
                   child: Text('hidden'),
                 ),
-                child: NewViewWidget(),
+                child: ViewWidget(),
               ),
             ),
           ),

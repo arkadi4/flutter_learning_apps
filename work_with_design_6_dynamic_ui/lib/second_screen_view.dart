@@ -6,26 +6,42 @@ import 'package:work_with_design_6_dynamic_ui/repository.dart';
 import 'package:work_with_design_6_dynamic_ui/view_model.dart';
 import 'package:work_with_design_6_dynamic_ui/view_model_for_second_screen.dart';
 
-class ViewForSecondScreen extends StatelessWidget {
-   ViewForSecondScreen({super.key});
+class ViewForSecondScreen extends StatefulWidget {
+  int index;
+   ViewForSecondScreen({super.key, required this.index});
+
+  @override
+  State<ViewForSecondScreen> createState() => _ViewForSecondScreenState();
+}
+
+class _ViewForSecondScreenState extends State<ViewForSecondScreen> {
+
+
 
   final Future<String> future =  Repository().getImageFromApi();
+  @override
+  void initState() {
+
+    super.initState();
+
+  }
 
   @override
   Widget build(BuildContext context) {
     ViewModelForSecondScreen viewModel = context.watch<ViewModelForSecondScreen>();
+
     // print('viewModel.list in ViewForSecondScreen build ${viewModel.list}');
     print('viewModel.list in ViewForSecondScreen build ${viewModel.list.length}');
     return Center(
       child: Container(
-        width: 300,
-        height: 300,
+        width: 100,
+        height: 100,
         child: ListView(
           scrollDirection: Axis.horizontal,
           children: [
             Container(
-              width: 300,
-              height: 300,
+              width: 100,
+              height: 100,
               child: FutureBuilder(
                 future: future,
                 builder: (context, snapshot) {
@@ -37,28 +53,31 @@ class ViewForSecondScreen extends StatelessWidget {
                   print('snapshot ${snapshot.data}');
                   // if (snapshot.connectionState == ConnectionState.done ) {
                   if (snapshot.hasData ) {
-                    Repository().doWeNeedNewPicture = false;
+                    // Repository().doWeNeedNewPicture = false;
                     // obj.doWeNeedNewPicture = false;
-                    viewModel.picture = snapshot.data!;
+                    // viewModel.picture = snapshot.data!;
                     print('viewModel.picture after snaphot.hasdata ${viewModel.picture}');
-                    return AnimatedOpacity(
-                      duration: Duration(seconds: 2),
-                      opacity: 1,
-                      child: Image.network(
-                        viewModel.picture,
-                        fit: BoxFit.cover,
-                      ),
+                    // return AnimatedOpacity(
+                    //   duration: Duration(seconds: 2),
+                    //   opacity: 1,
+                    //   child: Image.network(
+                    //     viewModel.picture,
+                    //     fit: BoxFit.cover,
+                    //   ),
+                    //  );
 
-                      // child: Image.asset(
-                      //   viewModel.list[viewModel.list.length - 1],
+                      // return Image.asset(
+                      //   snapshot.data!,
                       //   fit: BoxFit.cover,
                       //   // opacity: FadeTransition(opacity: 1.0,),
-                      // ),
-                    );
+                      // );
+
                     // return Image.network(
-                    //   obj.pictureUrl,
+                    //   viewModel.list[widget.index], // viewModel.list.length - 1
                     //   fit: BoxFit.cover,
                     // );
+
+                    return Container();
                   } else {
                     return CircularProgressIndicator();
                   }

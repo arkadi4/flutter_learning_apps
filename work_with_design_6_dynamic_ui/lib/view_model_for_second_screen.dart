@@ -29,6 +29,15 @@ class ViewModelForSecondScreen with ChangeNotifier {
     // return picture;
   }
 
+  Future<String> getPictureAndReturnIt() async {
+    picture = await repositoryObject.getImageFromApi();
+    list.add(picture);
+    // print('list in addPictureToList $list');
+    print('list in getPictureAndReturnIt ${list.length}');
+    return picture;
+  }
+
+
   int numberOfPicturesOnTheScreen = 1;
 
   addButtonHandler() async {

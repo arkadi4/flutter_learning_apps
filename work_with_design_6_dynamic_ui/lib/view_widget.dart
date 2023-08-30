@@ -1,65 +1,60 @@
 
 
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:work_with_design_6_dynamic_ui/repository.dart';
+import 'package:work_with_design_6_dynamic_ui/view_model.dart';
 
-class ViewWidget extends StatefulWidget {
+class ViewWidget extends StatelessWidget {
   ViewWidget({super.key});
-
-  // bool doWeNeedNewPicture = true;
-  @override
-  State<ViewWidget> createState() => _ViewWidgetState();
-}
-
-class _ViewWidgetState extends State<ViewWidget> {
-
-  final Repository obj = Repository();
-
 
   @override
   Widget build(BuildContext context) {
-    print('doWeNeedNewPicture ${obj.doWeNeedNewPicture}');
+    ViewModel viewModel = context.watch<ViewModel>();
     return Center(
-      child: Container(
+      child: SizedBox(
         width: 300,
         height: 300,
-        color: Colors.red,
-        child: ListView(
-          scrollDirection: Axis.horizontal,
-          children: [
-            Container(
-              width: 300,
-              height: 300,
-              color: Colors.green,
-              child: FutureBuilder(
-                future: obj.getImageFromApi(),
-                builder: (context, snapshot) {
-                  print('obj.pictureUrl ${obj.pictureUrl}');
-                  print('obj.doWeNeedNewPicture ${obj.doWeNeedNewPicture}');
-                  print('context $context');
-                  print('snapshot.data ${snapshot.data}');
-                  if (snapshot.hasData ) {
-                    obj.doWeNeedNewPicture = false;
-                    // obj.doWeNeedNewPicture = false;
-                    print('obj.doWeNeedNewPicture in if state ${obj.doWeNeedNewPicture}');
-                    return Image.asset(
-                      obj.pictureUrl,
-                      fit: BoxFit.cover,
-                    );
-                    // return Image.network(
-                    //   obj.pictureUrl,
-                    //   fit: BoxFit.cover,
-                    // );
-                  } else {
-                    // obj.getImageFromApi();
-                    return CircularProgressIndicator();
-                  }
-                },
-              ),
-            ),
-          ],
+        child: AnimatedOpacity(
+          duration: const Duration(seconds: 1),
+          opacity: viewModel.alpha,
+          child: SizedBox(
+            width: 300,
+            height: 300,
+            child: Image.network(viewModel.list[0], fit: BoxFit.fill,),
+          ),
         ),
       ),
     );
   }
 }
+
+// child: (!viewModel.isLoading)
+//     ? Image.network(viewModel.list[index])
+//     : const CircularProgressIndicator(),
+
+// child: FutureBuilder(
+//   future: obj.getImageFromApi(),
+//   builder: (context, snapshot) {
+//     print('obj.pictureUrl ${obj.pictureUrl}');
+//     print('obj.doWeNeedNewPicture ${obj.doWeNeedNewPicture}');
+//     print('context $context');
+//     print('snapshot.data ${snapshot.data}');
+//     if (snapshot.hasData ) {
+//       obj.doWeNeedNewPicture = false;
+//       // obj.doWeNeedNewPicture = false;
+//       print('obj.doWeNeedNewPicture in if state ${obj.doWeNeedNewPicture}');
+//       return Image.asset(
+//         obj.pictureUrl,
+//         fit: BoxFit.cover,
+//       );
+//       // return Image.network(
+//       //   obj.pictureUrl,
+//       //   fit: BoxFit.cover,
+//       // );
+//     } else {
+//       // obj.getImageFromApi();
+//       return CircularProgressIndicator();
+//     }
+//   },
+// ),

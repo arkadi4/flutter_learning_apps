@@ -34,7 +34,7 @@ class _NewViewWidgetState extends State<NewViewWidget> {
                   if (viewModel.list.length > viewModel.numberOfPicturesOnTheScreen)  print('overstack');
                   // print('viewModel.doWeNeedOneMorePicture ${viewModel.doWeNeedOneMorePicture}');
                   // print('context $context');
-                  print('snapshot.data ${snapshot.data}');
+                  // print('snapshot.data ${snapshot.data}');
                   if (snapshot.hasData ) {
                     Repository().doWeNeedNewPicture = false;
                     // obj.doWeNeedNewPicture = false;

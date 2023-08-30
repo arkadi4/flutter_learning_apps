@@ -13,8 +13,9 @@ class Repository {
     return instance;
   }
 
-  List<String> listOfPictures = [];
-  String pictureUrl = 'lib/assets/afonya.jpg';
+  // List<String> listOfPictures = [];
+  // String pictureUrl = 'lib/assets/afonya.jpg';
+  String pictureUrl = 'init url';
   bool doWeNeedNewPicture = false;
 
   Future<String> getInitPicture() async {
@@ -22,8 +23,8 @@ class Repository {
       // await Future.delayed(Duration(seconds: 2), () {
       //   print('delay');
       //   pictureUrl = 'lib/assets/afonya.jpg';
-      //   listOfPictures.add(pictureUrl);
-      //   print('init list $listOfPictures');
+      //   // listOfPictures.add(pictureUrl);
+      //   // print('init list $listOfPictures');
       // });
       // return pictureUrl;
 

@@ -8,13 +8,9 @@ import 'package:work_with_design_6_dynamic_ui/view_model_for_second_screen.dart'
 
 void main() {
   runApp(
-
     ChangeNotifierProvider.value(
     value: ViewModel(),
     child: ChangeNotifierProvider.value(value: ViewModelForSecondScreen(), child: const MyApp(),),
-
-    // child: const MyApp(),
-
     )
   );
 }
@@ -51,15 +47,9 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
 
-  // ViewModel viewModel = ViewModel();
-
   @override
   Widget build(BuildContext context) {
     return StartScreen();
-    // return ChangeNotifierProvider.value(
-    //   value: viewModel,
-    //   child: StartScreen(),
-    // );
   }
 }
 
@@ -112,7 +102,7 @@ class _StartScreenState extends State<StartScreen> {
           ],
         ),
       ),
-    );;
+    );
   }
 }
 

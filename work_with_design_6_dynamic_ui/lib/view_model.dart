@@ -9,6 +9,7 @@ class ViewModel with ChangeNotifier {
   bool doWeNeedOneMorePicture = false;
   double alpha = 1.0;
   bool isVisible = true;
+  bool isLoading = false;
   String picture = '---';
 
   void initViewModel() async {
@@ -16,13 +17,14 @@ class ViewModel with ChangeNotifier {
     list.add(initPicture);
   }
 
-  // ViewModel() {
-  //   initViewModel();
-  //   print('init list $list');
-  // }
+  ViewModel() {
+    initViewModel();
+    print('init list $list');
+  }
 
   Future<String> addPictureToList() async {
     picture = await repositoryObject.getImageFromApi();
+    list.add(picture);
     return picture;
   }
 
@@ -31,12 +33,15 @@ class ViewModel with ChangeNotifier {
 
   addButtonHandler() async {
     Repository().doWeNeedNewPicture = true;
+    await addPictureToList();
+    print('list in addButtonHandler ${list.length}');
     numberOfPicturesOnTheScreen += 1;
     notifyListeners();
   }
 
   removeButtonHandler() {
     numberOfPicturesOnTheScreen -= 1;
+    list.removeLast();
     notifyListeners();
   }
 
