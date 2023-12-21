@@ -3,7 +3,9 @@
 import 'dart:async';
 import 'dart:math';
 
-class Ship {
+import 'package:flutter/cupertino.dart';
+
+class Ship with ChangeNotifier{
   // String goodsType = ['Bread', 'Banana', 'Clothes'][Random().nextInt(3)];
   // int capacity = [10, 20, 30][Random().nextInt(3)];
   // int shipNumber = 0;
@@ -30,14 +32,22 @@ class Ship {
     }
   );
 
-  move()  {
+  move(nextStreamController)  {
     Timer.periodic(Duration(seconds: 1), (timer) {
-      print('tick ${timer.tick}');
-      print('speed ${speed}');
-      print('distanceToTheTunnel ${distanceToTheTunnel}');
+      // print('tick ${timer.tick}');
+      // print('speed ${event.speed}');
+      // print('distanceToTheTunnel ${event.distanceToTheTunnel}');
       progress = (speed * timer.tick / distanceToTheTunnel ) * 100;
-      print('progress ${progress}');
-      if (timer.tick > 5) {
+      if (progress < 100) {
+        // print('progress ${event.progress}');
+        // setState(() { });
+      }
+      if (progress >= 100) {
+        progress = 100;
+        shipStatus = 'reach the tunnel';
+        // setState(() { });
+        print('progress 100 shipNumber ${shipNumber}');
+        nextStreamController.add(this);
         timer.cancel();
       }
     });
@@ -59,3 +69,22 @@ class Ship {
 
   // String goodsType, int capacity
 }
+
+// Timer.periodic(Duration(seconds: 1), (timer) {
+// // print('tick ${timer.tick}');
+// // print('speed ${event.speed}');
+// // print('distanceToTheTunnel ${event.distanceToTheTunnel}');
+// ship.progress = (ship.speed * timer.tick / ship.distanceToTheTunnel ) * 100;
+// if (ship.progress < 100) {
+// // print('progress ${event.progress}');
+// setState(() { });
+// }
+// if (ship.progress >= 100) {
+// ship.progress = 100;
+// ship.shipStatus = 'reach the tunnel';
+// setState(() { });
+// print('progress 100 shipNumber ${ship.shipNumber}');
+// controllerTunnel.add(ship);
+// timer.cancel();
+// }
+// });

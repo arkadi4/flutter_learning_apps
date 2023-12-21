@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'dart:math';
 import 'package:ships_tonnels_goods/ship_object.dart';
 
@@ -38,8 +39,9 @@ class _MyHomePageState extends State<MyHomePage> {
   List<Ship> shipList = [];
   List<Ship> shipsInTheTunnel = [];
   List<Ship> queueBeforeTheTunnel = [];
-  var controllerGenerateAndMove = StreamController<Ship>();
-  var controllerTunnel = StreamController<Ship>();
+  var controllerMoveBeforeTunnel = StreamController<Ship>();
+  var controllerMoveInTunnel = StreamController<Ship>();
+  var controllerBreadDock = StreamController<Ship>();
 
   createRandomShips() {
     for (var i=0; i<10; i++) {
@@ -51,7 +53,7 @@ class _MyHomePageState extends State<MyHomePage> {
         distanceToTheTunnel: 80 - Random().nextDouble() * 50,
       );
       shipList.add(ship);
-      controllerGenerateAndMove.add(ship);
+      controllerMoveBeforeTunnel.add(ship);
     }
   }
 
@@ -59,15 +61,11 @@ class _MyHomePageState extends State<MyHomePage> {
   void initState() {
     super.initState();
     createRandomShips();
-    controllerGenerateAndMove.stream.listen((ship) {
-      // print(event.distanceToTheTunnel);
+    controllerMoveBeforeTunnel.stream.listen((ship) {
       Timer.periodic(Duration(seconds: 1), (timer) {
         // print('tick ${timer.tick}');
-        // print('speed ${event.speed}');
-        // print('distanceToTheTunnel ${event.distanceToTheTunnel}');
         ship.progress = (ship.speed * timer.tick / ship.distanceToTheTunnel ) * 100;
         if (ship.progress < 100) {
-          // print('progress ${event.progress}');
           setState(() { });
         }
         if (ship.progress >= 100) {
@@ -75,40 +73,55 @@ class _MyHomePageState extends State<MyHomePage> {
           ship.shipStatus = 'reach the tunnel';
           setState(() { });
           print('progress 100 shipNumber ${ship.shipNumber}');
-
-          controllerTunnel.add(ship);
+          if (shipsInTheTunnel.length < 5) {
+            shipsInTheTunnel.add(ship);
+            controllerMoveInTunnel.add(ship);
+          } else {
+            queueBeforeTheTunnel.add(ship);
+            ship.shipStatus = 'waiting in queue';
+            setState(() { });
+          }
           timer.cancel();
         }
       });
     });
-    controllerTunnel.stream.listen((ship) {
-      if (shipsInTheTunnel.length < 5 ) {
-        shipsInTheTunnel.add(ship);
-        print('shipsInTheTunnel ${shipsInTheTunnel}');
-        ship.shipStatus = 'moving in the tunnel';
-        // move
-        Timer.periodic(Duration(seconds: 1), (timer) {
+    controllerMoveInTunnel.stream.listen((ship) {
+      ship.shipStatus = 'moving in the tunnel';
+      Timer.periodic(Duration(seconds: 1), (timer) {
+        ship.progressInTunnel = (ship.speed * timer.tick / ship.tunnelLength ) * 100;
+        if (ship.progressInTunnel < 100) {
+          setState(() { });
+        }
+        if (ship.progressInTunnel >= 100) {
+          ship.progressInTunnel = 100;
+          ship.shipStatus = 'finish the tunnel';
+          setState(() { });
+          print('progressInTunnel 100 shipNumber ${ship.shipNumber}');
+          shipsInTheTunnel.remove(ship);
+          if (queueBeforeTheTunnel.length > 0) {
+            controllerMoveInTunnel.add(queueBeforeTheTunnel[0]);
+            print('queueBeforeTheTunnel ${queueBeforeTheTunnel}');
+            queueBeforeTheTunnel.removeAt(0);
+            print('queueBeforeTheTunnel ${queueBeforeTheTunnel}');
+          }
 
-          // print('speed ${event.speed}');
-          // print('distanceToTheTunnel ${event.distanceToTheTunnel}');
-          ship.progressInTunnel = (ship.speed * timer.tick / ship.tunnelLength ) * 100;
-          if (ship.progressInTunnel < 100) {
-            // print('progress ${event.progress}');
-            setState(() { });
-          }
-          if (ship.progressInTunnel >= 100) {
-            ship.progressInTunnel = 100;
-            ship.shipStatus = 'finish the tunnel';
-            setState(() { });
-            // remove from shipsInTunnel
-            print('progressInTunnel 100 shipNumber ${ship.shipNumber}');
-            timer.cancel();
-          }
-        });
-      } else {
-        queueBeforeTheTunnel.add(ship);
-        print('queueBeforeTheTunnel ${queueBeforeTheTunnel}');
-      }
+          // remove from shipsInTunnel
+
+          timer.cancel();
+        }
+      });
+
+
+      // if (shipsInTheTunnel.length < 5 ) {
+      //   shipsInTheTunnel.add(ship);
+      //   print('shipsInTheTunnel ${shipsInTheTunnel}');
+      //
+      //   // move
+      //
+      // } else {
+      //   queueBeforeTheTunnel.add(ship);
+      //   print('queueBeforeTheTunnel ${queueBeforeTheTunnel}');
+      // }
       // shipsInTheTunnel.add(ship);
       // print('ship queue ${shipsInTheTunnel}');
 
@@ -141,12 +154,18 @@ class _MyHomePageState extends State<MyHomePage> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text('Ship number: ${shipList[count].shipNumber}'),
-                          Text('Goods type: ${shipList[count].goodsType}'),
-                          Text('Capacity: ${shipList[count].capacity}'),
-                          Text('Speed: ${shipList[count].speed}'),
-                          Text('Distance to the tunnel: ${shipList[count].distanceToTheTunnel}'),
-                          Text('Progress to the tunnel: ${shipList[count].progress}'),
-                          Text('Progress in tunnel: ${shipList[count].progressInTunnel}'),
+                          // Text('Goods type: ${shipList[count].goodsType}'),
+                          // Text('Capacity: ${shipList[count].capacity}'),
+                          // Text('Speed: ${shipList[count].speed}'),
+                          // Text('Distance to the tunnel: ${shipList[count].distanceToTheTunnel}'),
+                          Row(
+                            children: [
+                              Text('Move: ${shipList[count].progress}'),
+                              Text('Tunnel: ${shipList[count].progressInTunnel}'),
+                            ],
+                          ),
+                          // Text('Progress to the tunnel: ${shipList[count].progress}'),
+                          // Text('Progress in tunnel: ${shipList[count].progressInTunnel}'),
                           Text('Ship status: ${shipList[count].shipStatus}'),
                         ],
                       ),
